@@ -22,5 +22,19 @@ stage('Build') {
         }
       }
     }
+
+ stage('RunContainerScan') {
+      steps {
+        withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+          script {
+            try {
+              bat("C:\\snyk-win.exe  container test asecurityguru/testeb")
+            } catch (err) {
+              echo err.getMessage()
+            }
+          }
+        }
+      }
+    }
   }
 }
